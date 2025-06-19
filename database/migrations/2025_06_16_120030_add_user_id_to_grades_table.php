@@ -12,13 +12,16 @@ class AddUserIdToGradesTable extends Migration
      * @return void
      */
 
-    public function up()
+
+        public function up()
     {
         Schema::table('grades', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id')->after('id');
+            $table->unsignedBigInteger('user_id')->nullable()->after('id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
+
+
 
     public function down()
     {

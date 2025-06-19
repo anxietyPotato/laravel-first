@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-   $grades = \App\Models\grades::all();
+   $grades = \App\Models\Grades::all();
 
    return view('welcome',compact('grades'));
 });
@@ -23,3 +23,5 @@ Route::get('/', function () {
 Route::post('/admin/Add-Grades', [App\Http\Controllers\AddGradesController::class, 'AddGrades']);
 
 Route::get('/admin/Add-Grades', [App\Http\Controllers\AddGradesController::class, 'showForm']);
+
+Route::post('/admin/all-products', [App\Http\Controllers\ProductController::class, 'Index']);

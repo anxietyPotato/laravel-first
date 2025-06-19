@@ -76,13 +76,7 @@
 
 
     <form action="/admin/Add-Grades" method="POST">
-        {{ csrf_field() }}
-
-        @if(session('success'))
-            <div class="alert alert-success text-center">
-                {{ session('success') }}
-            </div>
-        @endif
+        @csrf
 
         @if($errors->any())
             <p class="text-danger">Mistake: {{ $errors->first() }}</p>
@@ -109,4 +103,4 @@
     </form>
 
 
-</form> </div>
+ </div>
