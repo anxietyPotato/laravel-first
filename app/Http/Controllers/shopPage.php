@@ -16,7 +16,7 @@ class shopPage extends Controller
 
     public function addProduct(Request $request) {
         $validated = $request->validate([
-            'name' => 'required|string',
+            'name' => 'required|unique:product',
             'description' => 'required|string',
             'amount' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
@@ -27,7 +27,7 @@ class shopPage extends Controller
 
         ProductModel::create($validated);
 
-        return redirect()->back()->with('success', 'Product added successfully!');
+        return redirect()->route('all.products')->with('success', 'Product added successfully!');
     }
 
     public function showForm() {

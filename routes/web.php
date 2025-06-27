@@ -16,7 +16,10 @@ use App\Http\Controllers\ProductController;
 
 
 
-Route::get('/admin/all-products', [ProductController::class, 'index']);
+Route::get('/admin/all-products', [ProductController::class, 'index'])->name('all.products');
+
+Route::get('/admin/product/edit/{id}', [ProductController::class , 'singleProduct'])->name('product.single');
+Route::post('/admin/product/update/{id}', [ProductController::class , 'update'])->name('product.update');
 
 Route::get('/', function () {
    $grades = \App\Models\Grades::all();
@@ -33,7 +36,7 @@ Route::post('/admin/add-product', [\App\Http\Controllers\shopPage::class, 'addPr
 
 Route::get('/admin/add-product', [\App\Http\Controllers\shopPage::class, 'showForm']);
 
-Route::get('/admin/Delete-Products/{products}', [\App\Http\Controllers\ProductController::class, 'Delete']);
+Route::get('/admin/Delete-Products/{products}', [\App\Http\Controllers\ProductController::class, 'Delete'])->name('Delete.products');
 
 
 Route::get('/shop',[\App\Http\Controllers\shopPage::class, 'index']);

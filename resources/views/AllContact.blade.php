@@ -51,7 +51,7 @@
     </style>
 </head>
 <body>
-
+@yield("pagecontent")
 <div class="container py-5">
     <h1 class="mb-4 text-center">📇 Contact List</h1>
 

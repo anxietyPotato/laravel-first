@@ -50,7 +50,7 @@
     </style>
 </head>
 <body>
-
+@yield("pagecontent")
 <div class="container py-5">
     <h1 class="mb-4 text-center">🛍️ Product List</h1>
 
@@ -64,14 +64,18 @@
                 <div class="col-md-4 mb-4">
                     <div class="card shadow-sm h-100">
                         <div class="card-body">
+                            @if($product->image)
+                                <img src="{{ asset($product->image) }}" alt="Product Image" class="img-fluid rounded mb-3" style="max-height: 180px; object-fit: cover;">
+                            @endif
+
                             <h5 class="card-title">{{ $product->name }}</h5>
                             <h6 class="card-subtitle mb-2">€{{ number_format($product->price, 2) }}</h6>
                             <p class="card-text"><strong>Amount:</strong> {{ $product->amount }}</p>
                             <p class="card-text"><strong>Description:</strong><br>{{ $product->description }}
 
                             <div class="d-flex justify-content-between mt-3">
-                                <a href="{{ url('/admin/Delete-Products/' . $product->id) }}" class="btn btn-danger btn-sm">Obriši</a>
-                                <a href="{{ url('/admin/edit-product/' . $product->id) }}" class="btn btn-primary btn-sm">Edituj</a>
+                                <a href="{{route('Delete.products',['products'=>$product->id])}}"  class="btn btn-danger btn-sm">Obriši</a>
+                                <a href="{{ route('product.single',['id' => $product->id]) }} }}" class="btn btn-primary btn-sm">Edituj</a>
                             </div></p>
                         </div>
                     </div>
