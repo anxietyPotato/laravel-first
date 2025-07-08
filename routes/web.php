@@ -28,7 +28,7 @@ require __DIR__.'/auth.php';
 // 🛍️ Product Management
 // ==========================
 Route::prefix('admin')
-    ->middleware(['auth'])
+    ->middleware(['auth', App\Http\Middleware\checkIsAdminMiddleware::class])
     ->group(function () {
     Route::get('/all-products', [ProductController::class, 'index'])->name('all.products');
     Route::get('/product/edit/{product}', [ProductController::class, 'singleProduct'])->name('product.single');
@@ -43,7 +43,7 @@ Route::prefix('admin')
 // 🏫 Grades Management
 // ==========================
 Route::prefix('admin')
-    ->middleware(['auth'])
+    ->middleware(['auth', App\Http\Middleware\checkIsAdminMiddleware::class])
     ->group(function () {
     Route::get('/Add-Grades', [AddGradesController::class, 'showForm']);
     Route::post('/Add-Grades', [AddGradesController::class, 'AddGrades']);
@@ -53,7 +53,7 @@ Route::prefix('admin')
 // 📞 Contact Management
 // ==========================
 Route::prefix('admin')
-    ->middleware(['auth'])
+    ->middleware(['auth', App\Http\Middleware\checkIsAdminMiddleware::class])
     ->group(function () {
     Route::get('/Delete-Contact/{Contact}', [ContactController::class, 'Delete'])->name('contact.delete');
     Route::get('/edit-contact/{Contact}', [ContactController::class, 'showEditForm'])->name('contact.form');
@@ -66,7 +66,9 @@ Route::prefix('admin')
 Route::get('/shop', [shopPage::class, 'index']);
 
 // All contacts (not under admin)
-Route::get('/AllContact', [ContactController::class, 'AllContact'])->middleware(['auth'])->name('all.contact');
+Route::get('/AllContact', [ContactController::class, 'AllContact'])
+    ->middleware(['auth', App\Http\Middleware\checkIsAdminMiddleware::class])
+    ->name('all.contact');
 
 
 //** Route::get('/admin/all-products', [ProductController::class, 'index'])->name('all.products');
