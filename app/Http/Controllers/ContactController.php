@@ -37,4 +37,28 @@ return redirect('/shop');
         $singleContact->delete();
         return redirect()->back();
     }
+    public function edit(request $request,$id)
+    {
+        $contact = ContactModel::where(['id'=>$id])->first();
+
+        if ($contact === null) {
+            die("this contact doesn't exist");
+        }
+
+
+        $contact->email= $request->get('email');
+        $contact->subject= $request->get('subject');
+        $contact->message= $request->get('message');
+        $contact->save();
+        return redirect(route('all.contact'));
+    }
+    public function showEditForm($id)
+    {
+        $contact = ContactModel::where(['id'=>$id])->first();
+
+        if ($contact === null) {
+            die("this contact doesn't exist");
+        }
+        return view('products.editContact', compact('contact'));
+    }
 }

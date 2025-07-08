@@ -1,7 +1,10 @@
-<!DOCTYPE html>
+@extends('layout')
+
+@section('pagecontent')
+    <!DOCTYPE html>
 <html lang="en">
 <head>
-    @extends('layout')
+
     <meta charset="UTF-8">
     <title>Grades</title>
     <style>
@@ -68,7 +71,7 @@
 
 </body>
 </html>
-
+@endsection
 
 
 

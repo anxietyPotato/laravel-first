@@ -21,28 +21,14 @@ class ProductController extends Controller
         return redirect()->back();
     }
 
-    public function singleProduct(request $request,$id){
-
-        $product = ProductModel::where(['id'=>$id])->first();
-
-
-
-            if ($product === null){
-                    die("this product doesn't exist");
-
-            }
-
+    public function singleProduct(request $request,ProductModel $product){
 
 
         return view('products.edit', compact('product'));
     }
-    public function update(request $request,$id)
+    public function update(request $request, ProductModel  $product)
     {
-        $product = ProductModel::where(['id'=>$id])->first();
 
-                if ($product === null) {
-                    die("this product doesn't exist");
-                 }
 
 
                 $product->name= $request->get('name');

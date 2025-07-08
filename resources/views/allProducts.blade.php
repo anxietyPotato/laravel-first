@@ -74,8 +74,10 @@
                             <p class="card-text"><strong>Description:</strong><br>{{ $product->description }}
 
                             <div class="d-flex justify-content-between mt-3">
-                                <a href="{{route('Delete.products',['products'=>$product->id])}}"  class="btn btn-danger btn-sm">Obriši</a>
-                                <a href="{{ route('product.single',['id' => $product->id]) }} }}" class="btn btn-primary btn-sm">Edituj</a>
+                                <a href="{{ route('Delete.products', ['products' => $product->id]) }}" class="btn btn-danger btn-sm">Obriši</a>
+
+                                <a href="{{ route('product.single',['product' => $product->id]) }} " class="btn btn-primary btn-sm">Edituj</a>
+
                             </div></p>
                         </div>
                     </div>

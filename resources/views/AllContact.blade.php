@@ -75,6 +75,8 @@
                             <div class="d-flex justify-content-between mt-auto pt-3">
                                 <a href="{{ route('contact.delete', ['Contact' => $Contact->id]) }}" class="btn btn-danger btn-sm">Obriši</a>
                                 <a href="{{ route('contact.edit', ['Contact' => $Contact->id]) }}" class="btn btn-primary btn-sm">Edituj</a>
+
+
                             </div>
                         </div>
                     </div>
