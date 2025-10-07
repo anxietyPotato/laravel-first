@@ -1,7 +1,7 @@
 
 @extends('layout')
 
-@section('pageTitle', 'Prodavnica')
+
 
 @section('pagecontent')
     <div class="container py-5">
@@ -27,3 +27,4 @@
         @endif
     </div>
 @endsection
+
