@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\ExcangeRates;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 
@@ -34,13 +35,30 @@ class DailyCurencyRates extends Command
     /**
      * Execute the console command.
      *
-     * @return int
+     * @return void
      */
     public function handle()
     {
+        $currencies = ['USD', 'EUR', 'GBP', 'JPY'];
+
+        $response = Http::get("https://kurs.resenje.org/api/v1/rates/today");
+        $data = $response->json();
+        $rateList = $data['rates'] ?? [];
+
+        foreach ($currencies as $currency) {
+            $rate = collect($rateList)->firstWhere('code', $currency);
+
+            if ($rate && isset($rate['exchange_middle'])) {
+                ExcangeRates::create([
+                    'currency' => $currency,
+                    'value' => $rate['exchange_middle'],
+                ]);
+            } else {
+                $this->warn("Failed to fetch rate for $currency: " . ($rate['message'] ?? 'Unknown error'));
+            }
+        }
+        }
 
 
-        $response = Http::get('https://kurs.resenje.org/api/v1/currencies/eur/rates/today');
-        dd($response->json()['exchange_middle']);
-    }
+
 }

@@ -35,9 +35,10 @@ Route::prefix('admin')
     Route::post('/product/update/{product}', [ProductController::class, 'update'])->name('product.update');
     Route::get('/Delete-Products/{products}', [ProductController::class, 'Delete'])->name('Delete.products');
 
-    Route::get('/add-product', [shopPage::class, 'showForm']);
-    Route::post('/add-product', [shopPage::class, 'addProduct']);
-});
+        Route::get('/add-product', [shopPage::class, 'showForm'])->name('add.product.form');
+        Route::post('/add-product', [shopPage::class, 'addProduct'])->name('add.product');
+
+    });
 
 // ==========================
 // 🏫 Grades Management

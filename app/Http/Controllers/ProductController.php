@@ -9,12 +9,12 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = ProductModel::all();
-        return view('allProducts', compact('products'));
+        $product = ProductModel::all();
+        return view('shop', compact('product'));
 
     }
-    public function delete($products){
-        $singleProduct = ProductModel::where('id', $products)->first();
+    public function delete($product){
+        $singleProduct = ProductModel::where('id', $product)->first();
         if ($singleProduct == null) {
         die("this product doesn't exist");}
         $singleProduct->delete();

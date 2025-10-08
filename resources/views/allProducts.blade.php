@@ -12,8 +12,10 @@
             @foreach($products as $product)
                 <div class="col-md-4 mb-4">
                     <div class="card h-100">
-                        @if($product->image)
-                            <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                        @if($product->image && file_exists(public_path('images/' . $product->image)))
+                            <img src="{{ asset('images/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                        @else
+                            <img src="{{ asset('images/default.jpg') }}" class="card-img-top" alt="Default Image">
                         @endif
                         <div class="card-body">
                             <h5>{{ $product->name }}</h5>
