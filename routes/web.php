@@ -6,9 +6,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 
 
+use App\Http\Controllers\ShopController;
 
 use App\Http\Controllers\AddGradesController;
-use App\Http\Controllers\shopPage;
+
 use App\Http\Controllers\ContactController;
 
 // Public Home
@@ -26,19 +27,28 @@ require __DIR__.'/auth.php';
 
 // ==========================
 // 🛍️ Product Management
-// ==========================
+
+
 Route::prefix('admin')
     ->middleware(['auth', App\Http\Middleware\checkIsAdminMiddleware::class])
     ->group(function () {
-    Route::get('/all-products', [ProductController::class, 'index'])->name('all.products');
-    Route::get('/product/edit/{product}', [ProductController::class, 'singleProduct'])->name('product.single');
-    Route::post('/product/update/{product}', [ProductController::class, 'update'])->name('product.update');
-    Route::get('/Delete-Products/{products}', [ProductController::class, 'Delete'])->name('Delete.products');
+        Route::get('/all-products', [ProductController::class, 'index'])->name('all.products');
 
-        Route::get('/add-product', [shopPage::class, 'showForm'])->name('add.product.form');
-        Route::post('/add-product', [shopPage::class, 'addProduct'])->name('add.product');
 
+
+                Route::get('/add-product', [ShopController::class, 'showForm'])->name('add.product');
+                Route::post('/add-product', [ShopController::class, 'addProduct']);
+
+
+        Route::get('/delete-product/{id}', [ProductController::class, 'delete'])->name('delete.product');
+        Route::get('/product/edit/{product}', [ProductController::class, 'singleProduct'])->name('product.single');
+        Route::post('/product/update/{product}', [ProductController::class, 'update'])->name('product.update');
     });
+
+// 🛍️ Public shop page
+Route::get('/shop', [ProductController::class, 'showShop'])->name('shop');
+Route::get('/shop/product/{product}-{slug}', [ProductController::class, 'showSingle'])->name('shop.single');
+
 
 // ==========================
 // 🏫 Grades Management
@@ -64,7 +74,7 @@ Route::prefix('admin')
 // ==========================
 // 🛒 Shop Page
 // ==========================
-Route::get('/shop', [shopPage::class, 'index']);
+
 
 // All contacts (not under admin)
 Route::get('/AllContact', [ContactController::class, 'AllContact'])

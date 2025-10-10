@@ -50,7 +50,7 @@
                                     <a href="#" class="btn btn-success btn-sm">
                                         <i class="bi bi-cart-plus"></i> Add to Cart
                                     </a>
-                                    <a href="#" class="btn btn-outline-primary btn-sm">
+                                    <a href="{{ route('shop.single', ['product' => $item->id, 'slug' => Str::slug($item->name)]) }}" class="btn btn-outline-primary btn-sm">
                                         <i class="bi bi-info-circle"></i> Details
                                     </a>
                                 </div>

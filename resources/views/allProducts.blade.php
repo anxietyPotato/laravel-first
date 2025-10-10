@@ -1,35 +1,46 @@
 @extends('layout')
-
-
-
 @section('pagecontent')
-    <h2 class="text-center mb-4">🛒 Product List</h2>
+    <div class="container py-5">
+        <h2 class="text-center mb-4 text-primary">All Products</h2>
 
-    @if($products->isEmpty())
-        <div class="alert alert-warning text-center">No products found.</div>
-    @else
-        <div class="row">
-            @foreach($products as $product)
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        @if($product->image && file_exists(public_path('images/' . $product->image)))
-                            <img src="{{ asset('images/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}">
-                        @else
-                            <img src="{{ asset('images/default.jpg') }}" class="card-img-top" alt="Default Image">
-                        @endif
-                        <div class="card-body">
-                            <h5>{{ $product->name }}</h5>
-                            <p>{{ $product->description }}</p>
-                            <p><strong>Price:</strong> €{{ number_format($product->price, 2) }}</p>
-                            <p><strong>Amount:</strong> {{ $product->amount }}</p>
-                            <div class="d-flex justify-content-between">
-                                <a href="{{ route('Delete.products', ['products' => $product->id]) }}" class="btn btn-danger btn-sm">Delete</a>
-                                <a href="{{ route('product.single',['product' => $product->id]) }}" class="btn btn-primary btn-sm">Edit</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-    @endif
+        @if(session('success'))
+            <div class="alert alert-success text-center">{{ session('success') }}</div>
+        @endif
+
+        @if($products->isEmpty())
+            <div class="alert alert-warning text-center">No products found.</div>
+        @else
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover text-center align-middle">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Price (€)</th>
+                        <th>Image</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($products as $p)
+                        <tr>
+                            <td>{{ $p->id }}</td>
+                            <td>{{ $p->name }}</td>
+                            <td>{{ $p->description }}</td>
+                            <td>{{ $p->amount }}</td>
+                            <td>€{{ number_format($p->price, 2) }}</td>
+                            <td><img src="{{ asset('storage/'.$p->image) }}" alt="Image" width="70" class="rounded"></td>
+                            <td>
+                                <a href="{{ route('product.single', $p->id) }}" class="btn btn-sm btn-info">Edit</a>
+                                <a href="{{ route('delete.product', $p->id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @endif
+    </div>
 @endsection
