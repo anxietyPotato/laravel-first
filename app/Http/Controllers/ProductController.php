@@ -36,7 +36,28 @@ class ProductController extends Controller
     // 🧑‍💼 Admin — update product
     public function update(Request $request, ProductModel $product)
     {
-        $product->update($request->only(['name', 'description', 'price', 'amount', 'image']));
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric|min:0',
+            'amount' => 'required|integer|min:1',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+        ]);
+        // Update basic fields
+        $product->name = $request->get('name');
+        $product->description = $request->get('description');
+        $product->price = $request->get('price');
+        $product->amount = $request->get('amount');
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('images'), $imageName);
+            $product->image = $imageName;
+        }
+
+        $product->save();
+
         return redirect()->route('all.products')->with('success', 'Product updated successfully!');
     }
 

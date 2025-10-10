@@ -89,8 +89,8 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="image" class="form-label">Image (URL)</label>
-                    <input type="url" class="form-control" id="image" name="image" value="{{ $product->image }}" required>
+                    <label for="image" class="form-label">Upload Image</label>
+                    <input type="file" class="form-control" id="image" name="image">
                 </div>
 
                 <div class="text-center">

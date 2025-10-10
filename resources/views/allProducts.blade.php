@@ -31,7 +31,7 @@
                             <td>{{ $p->description }}</td>
                             <td>{{ $p->amount }}</td>
                             <td>€{{ number_format($p->price, 2) }}</td>
-                            <td><img src="{{ asset('storage/'.$p->image) }}" alt="Image" width="70" class="rounded"></td>
+                           <td> <img src="{{ asset('images/' . $p->image) }}" alt="Image" width="70" class="rounded"></td>
                             <td>
                                 <a href="{{ route('product.single', $p->id) }}" class="btn btn-sm btn-info">Edit</a>
                                 <a href="{{ route('delete.product', $p->id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
