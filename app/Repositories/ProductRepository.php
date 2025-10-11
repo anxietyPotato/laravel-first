@@ -58,5 +58,8 @@ class ProductRepository
         $product->save();
         return $product;
     }
+    public function getProductById($id){
+        return $this->productModel->where(['id'=>$id])->first();
+    }
 }
 

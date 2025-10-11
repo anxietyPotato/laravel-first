@@ -23,11 +23,14 @@ class ProductController extends Controller
     }
 
     public function delete($id)
-    {
-        $deleted = $this->productRepo->delete($id);
-        if (!$deleted) {
-            abort(404, 'Product not found');
+    { $singleProduct = $this->productRepo->getProductById($id);
+        if ($singleProduct === null) {
+            die("this product doesn't exist");
         }
+
+
+        $singleProduct->delete($id);
+
 
         return redirect()->back()->with('success', 'Product deleted successfully!');
     }
@@ -51,7 +54,7 @@ class ProductController extends Controller
 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('products', 'public');
-            $data['image'] = $imagePath; // e.g., "products/1697030000_photo.jpg"
+            $data['image'] = $imagePath; // e.g., "products/16_photo.jpg"
         }
 
         $this->productRepo->updateProduct($product, $data);
