@@ -32,14 +32,8 @@
                                     Grade: {{ $grade->Grade }}
                                 </p>
                             </div>
-                            <div class="card-footer bg-transparent border-0 text-center pb-4">
-                                <button class="btn btn-success btn-sm me-2">
-                                    <i class="bi bi-pencil-square"></i> Edit
-                                </button>
-                                <button class="btn btn-outline-danger btn-sm text-light border-light">
-                                    <i class="bi bi-trash"></i> Delete
-                                </button>
-                            </div>
+
+
                         </div>
                     </div>
                 @endforeach
