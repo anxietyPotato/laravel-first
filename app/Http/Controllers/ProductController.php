@@ -1,39 +1,42 @@
 <?php
 
-
 namespace App\Http\Controllers;
 
 use App\Models\ProductModel;
+use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    // 🧑‍💼 Admin — view all products
+    private $productRepo;
+
+    public function __construct(ProductRepository $productRepo)
+    {
+        $this->productRepo = $productRepo;
+    }
+
     public function index()
     {
-        $products = ProductModel::all();
+        $products = $this->productRepo->getAllProducts();
+
         return view('allProducts', compact('products'));
     }
 
-    // 🧑‍💼 Admin — delete a product
     public function delete($id)
     {
-        $product = ProductModel::find($id);
-        if (!$product) {
+        $deleted = $this->productRepo->delete($id);
+        if (!$deleted) {
             abort(404, 'Product not found');
         }
 
-        $product->delete();
         return redirect()->back()->with('success', 'Product deleted successfully!');
     }
 
-    // 🧑‍💼 Admin — edit a product
     public function singleProduct(ProductModel $product)
     {
         return view('products.edit', compact('product'));
     }
 
-    // 🧑‍💼 Admin — update product
     public function update(Request $request, ProductModel $product)
     {
         $request->validate([
@@ -43,33 +46,28 @@ class ProductController extends Controller
             'amount' => 'required|integer|min:1',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
-        // Update basic fields
-        $product->name = $request->get('name');
-        $product->description = $request->get('description');
-        $product->price = $request->get('price');
-        $product->amount = $request->get('amount');
 
-        // Handle image upload
+        $data = $request->only(['name', 'description', 'price', 'amount']);
+
         if ($request->hasFile('image')) {
-            $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
-            $request->file('image')->move(public_path('images'), $imageName);
-            $product->image = $imageName;
+            $imagePath = $request->file('image')->store('products', 'public');
+            $data['image'] = $imagePath; // e.g., "products/1697030000_photo.jpg"
         }
 
-        $product->save();
+        $this->productRepo->updateProduct($product, $data);
 
         return redirect()->route('all.products')->with('success', 'Product updated successfully!');
     }
 
-    // 🛍️ Public — show shop
     public function showShop()
     {
-        $product = ProductModel::all();
-        return view('shop', compact('product'));
+        $products = $this->productRepo->getAllProducts();
+
+        return view('shop', compact('products'));
     }
+
     public function showSingle(ProductModel $product)
     {
         return view('singleProduct', compact('product'));
     }
-
 }
