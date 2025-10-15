@@ -1,16 +1,12 @@
 <?php
 
 
-use App\Models\Grades;
-use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\ProductController;
-
-
 use App\Http\Controllers\ShopController;
-
 use App\Http\Controllers\AddGradesController;
-
 use App\Http\Controllers\ContactController;
+use App\Http\Middleware\checkIsAdminMiddleware;
 
 // Public Home
 Route::get('/', function () {
@@ -29,58 +25,68 @@ require __DIR__.'/auth.php';
 // 🛍️ Product Management
 
 
+
+// ==========================
+// 🛒 Admin Product Management
+// ==========================
 Route::prefix('admin')
-    ->middleware(['auth', App\Http\Middleware\checkIsAdminMiddleware::class])
+    ->middleware(['auth', checkIsAdminMiddleware::class])
+    ->controller(ProductController::class)
     ->group(function () {
-        Route::get('/all-products', [ProductController::class, 'index'])->name('all.products');
-
-
-
-                Route::get('/add-product', [ShopController::class, 'showForm'])->name('add.product');
-                Route::post('/add-product', [ShopController::class, 'addProduct']);
-
-
-        Route::get('/delete-product/{id}', [ProductController::class, 'delete'])->name('delete.product');
-        Route::get('/product/edit/{product}', [ProductController::class, 'singleProduct'])->name('product.single');
-        Route::post('/product/update/{product}', [ProductController::class, 'update'])->name('product.update');
+        Route::get('/all-products', 'index')->name('all.products');
+        Route::get('/delete-product/{id}', 'delete')->name('delete.product');
+        Route::get('/product/edit/{product}', 'singleProduct')->name('product.single');
+        Route::post('/product/update/{product}', 'update')->name('product.update');
     });
 
-// 🛍️ Public shop page
-Route::get('/shop', [ProductController::class, 'showShop'])->name('shop');
-Route::get('/shop/product/{product}-{slug}', [ProductController::class, 'showSingle'])->name('shop.single');
-
+// ==========================
+// 🛍️ Admin Shop Management
+// ==========================
+Route::prefix('admin')
+    ->middleware(['auth', checkIsAdminMiddleware::class])
+    ->controller(ShopController::class)
+    ->group(function () {
+        Route::get('/add-product', 'showForm')->name('add.product');
+        Route::post('/add-product', 'addProduct');
+    });
 
 // ==========================
 // 🏫 Grades Management
 // ==========================
 Route::prefix('admin')
-    ->middleware(['auth', App\Http\Middleware\checkIsAdminMiddleware::class])
+    ->middleware(['auth', checkIsAdminMiddleware::class])
+    ->controller(AddGradesController::class)
     ->group(function () {
-    Route::get('/Add-Grades', [AddGradesController::class, 'showForm']);
-    Route::post('/Add-Grades', [AddGradesController::class, 'AddGrades']);
-});
+        Route::get('/Add-Grades', 'showForm');
+        Route::post('/Add-Grades', 'AddGrades');
+    });
 
 // ==========================
-// 📞 Contact Management
+// 📞 Contact Management (Admin)
 // ==========================
 Route::prefix('admin')
-    ->middleware(['auth', App\Http\Middleware\checkIsAdminMiddleware::class])
+    ->middleware(['auth', checkIsAdminMiddleware::class])
+    ->controller(ContactController::class)
     ->group(function () {
-    Route::get('/Delete-Contact/{Contact}', [ContactController::class, 'Delete'])->name('contact.delete');
-    Route::get('/edit-contact/{Contact}', [ContactController::class, 'showEditForm'])->name('contact.form');
-    Route::post('/edit-contact/{Contact}', [ContactController::class, 'edit'])->name('contact.edit');
-});
+        Route::get('/Delete-Contact/{Contact}', 'Delete')->name('contact.delete');
+        Route::get('/edit-contact/{Contact}', 'showEditForm')->name('contact.form');
+        Route::post('/edit-contact/{Contact}', 'edit')->name('contact.edit');
+    });
 
 // ==========================
-// 🛒 Shop Page
+// 📞 Contact Management (Public)
 // ==========================
-
-
-// All contacts (not under admin)
 Route::get('/AllContact', [ContactController::class, 'AllContact'])
-    ->middleware(['auth', App\Http\Middleware\checkIsAdminMiddleware::class])
+    ->middleware(['auth', checkIsAdminMiddleware::class])
     ->name('all.contact');
 
+// ==========================
+// 🛍️ Public Shop Page
+// ==========================
+Route::controller(ProductController::class)->group(function () {
+    Route::get('/shop', 'showShop')->name('shop');
+    Route::get('/shop/product/{product}-{slug}', 'showSingle')->name('shop.single');
+});
 
 //** Route::get('/admin/all-products', [ProductController::class, 'index'])->name('all.products');
 //
