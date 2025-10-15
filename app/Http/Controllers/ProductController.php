@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProductRequests;
 use App\Models\ProductModel;
 use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
+use App\Http\Requests\ProductRequests;
 
 class ProductController extends Controller
 {
@@ -41,11 +41,13 @@ class ProductController extends Controller
         return view('products.edit', compact('product'));
     }
 
+
+
     public function update(ProductRequests $request, ProductModel $product)
     {
+        $data = $request->validated(); // ✅ uses rules from ProductRequests
 
 
-        $data = $request->only(['name', 'description', 'price', 'amount']);
 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('products', 'public');
