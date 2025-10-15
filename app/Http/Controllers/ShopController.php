@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
-
+use App\Http\Requests\ProductRequests;
 class ShopController extends Controller
 {
     protected $productRepo;
@@ -22,16 +22,10 @@ class ShopController extends Controller
     }
 
     // Handle Add Product form submission
-    public function addProduct(Request $request)
-    {
-        $validated = $request->validate([
-            'name'        => 'required|unique:product,name',
-            'description' => 'required|string',
-            'amount'      => 'required|integer|min:1',
-            'price'       => 'required|numeric|min:0',
-            'image'       => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
 
+
+    public function addProduct(ProductRequests $request) {
+        $validated = $request->validated();
         // Delegate creation to repository
         $this->productRepo->createProduct($validated + ['image' => $request->file('image')]);
 
