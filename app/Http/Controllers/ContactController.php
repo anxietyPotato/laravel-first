@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContactRequests;
 use App\Repositories\ContactRepo;
 use Illuminate\Http\Request;
 
@@ -25,7 +26,9 @@ class ContactController extends Controller
         return view('AllContact', compact('AllContact'));
     }
 
-    public function sendContact(Request $request)
+
+
+    public function sendContact(ContactRequests $request)
     {
         return $this->contactRepo->sendContact($request);
     }
