@@ -21,8 +21,6 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 
-// ==========================
-// 🛍️ Product Management
 
 
 
@@ -88,42 +86,3 @@ Route::controller(ProductController::class)->group(function () {
     Route::get('/shop/product/{product}-{slug}', 'showSingle')->name('shop.single');
 });
 
-//** Route::get('/admin/all-products', [ProductController::class, 'index'])->name('all.products');
-//
-//Route::get('/admin/product/edit/{product}', [ProductController::class, 'singleProduct'])->name('product.single');
-//Route::post('/admin/product/update/{product}', [ProductController::class, 'update'])->name('product.update');
-//
-//Route::get('/', function () {
-//    $grades = \App\Models\Grades::all(); group routes named in laravel without changing any structure of names please
-//
-//    return view('welcome', compact('grades'));
-//});
-//
-//Route::get('/dashboard', function () {
-//    return view('dashboard');
-//})->middleware(['auth'])->name('dashboard');
-//
-//require __DIR__.'/auth.php';
-//
-//Route::post('/admin/Add-Grades', [App\Http\Controllers\AddGradesController::class, 'AddGrades']);
-//
-//Route::get('/admin/Add-Grades', [App\Http\Controllers\AddGradesController::class, 'showForm']);
-//
-//Route::post('/admin/add-product', [\App\Http\Controllers\shopPage::class, 'addProduct']);
-//
-//Route::get('/admin/add-product', [\App\Http\Controllers\shopPage::class, 'showForm']);
-//
-//Route::get('/admin/Delete-Products/{products}', [\App\Http\Controllers\ProductController::class, 'Delete'])->name('Delete.products');
-//
-//
-//Route::get('/shop', [\App\Http\Controllers\shopPage::class, 'index']);
-//
-//Route::get('/AllContact', [\App\Http\Controllers\ContactController::class, 'AllContact'])->name('all.contact');
-//
-//Route::get('/admin/Delete-Contact/{Contact}', [\App\Http\Controllers\ContactController::class, 'Delete'])->name('contact.delete');
-//
-//Route::get('/admin/edit-contact/{Contact}', [\App\Http\Controllers\ContactController::class, 'showEditForm'])->name('contact.form');
-//
-//// Handle the submitted form
-//Route::post('/admin/edit-contact/{Contact}', [\App\Http\Controllers\ContactController::class, 'edit'])->name('contact.edit');
-//* */
