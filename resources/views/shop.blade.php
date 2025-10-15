@@ -13,18 +13,19 @@
             </p>
         </div>
 
-        @if($product->isEmpty())
+        @if($products->isEmpty())
             <div class="alert alert-warning text-center shadow-sm">
                 <i class="bi bi-exclamation-triangle-fill me-2"></i>
                 No products available.
             </div>
         @else
             <div class="row g-4 justify-content-center">
-                @foreach($product as $item)
+                @foreach($products as $item)
                     <div class="col-md-6 col-lg-4">
                         <div class="card h-100 border-0 shadow-lg bg-white">
                             <div class="card-body text-center p-4">
 
+                                <img src="{{ asset('storage/' . $item->image) }} " alt="Image" class="img-fluid rounded" style="max-width: 100px; " >
                                 <!-- Product Name -->
                                 <h5 class="card-title fw-bold text-success mb-2">
                                     {{ $item->name }}
