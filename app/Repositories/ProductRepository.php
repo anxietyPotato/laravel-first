@@ -27,9 +27,9 @@ class ProductRepository
     public function createProduct(array $data)
     {
         if (isset($data['image'])) {
-            $imageName = time() . '_' . $data['image']->getClientOriginalName();
-            $data['image']->move(public_path('images'), $imageName);
-            $data['image'] = $imageName;
+            $imagePath = $data['image']->store('products', 'public'); // saves to storage/app/public/products
+            $data['image'] = $imagePath; // e.g., "products/1708535332_mala.jpg"
+
 
         }
 
