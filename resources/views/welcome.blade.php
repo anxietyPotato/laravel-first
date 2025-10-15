@@ -1,6 +1,12 @@
 @extends('layout')
 
 @section('pagecontent')
+    @if(session('success'))
+        <div class="alert alert-success text-center fw-bold">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <div class="container-fluid py-5 bg-black text-light min-vh-100">
 
         <!-- Header -->
