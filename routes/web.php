@@ -21,6 +21,8 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 
+// ==========================
+// 🛍️ Product Management
 
 
 
@@ -31,10 +33,10 @@ Route::prefix('admin')
     ->middleware(['auth', checkIsAdminMiddleware::class])
     ->controller(ProductController::class)
     ->group(function () {
-        Route::get('/all', 'index')->name('all.products');
-        Route::get('/delete/{id}', 'delete')->name('delete.product');
-        Route::get('/edit/{product}', 'singleProduct')->name('product.single');
-        Route::post('/update/{product}', 'update')->name('product.update');
+        Route::get('/all-products', 'index')->name('all.products');
+        Route::get('/delete-product/{id}', 'delete')->name('delete.product');
+        Route::get('/product/edit/{product}', 'singleProduct')->name('product.single');
+        Route::post('/product/update/{product}', 'update')->name('product.update');
     });
 
 // ==========================
@@ -65,10 +67,11 @@ Route::prefix('admin')
 Route::prefix('admin')
     ->middleware(['auth', checkIsAdminMiddleware::class])
     ->controller(ContactController::class)
+    ->name('contact.')
     ->group(function () {
-        Route::get('/Delete/{Contact}', 'Delete')->name('contact.delete');
-        Route::get('/edit/{Contact}', 'showEditForm')->name('contact.form');
-        Route::post('/edit/{Contact}', 'edit')->name('contact.edit');
+        Route::get('/Delete-Contact/{Contact}', 'Delete')->name('delete');
+        Route::get('/edit-contact/{Contact}', 'showEditForm')->name('form');
+        Route::post('/edit-contact/{Contact}', 'edit')->name('edit');
     });
 
 // ==========================
@@ -85,4 +88,5 @@ Route::controller(ProductController::class)->group(function () {
     Route::get('/shop', 'showShop')->name('shop');
     Route::get('/shop/product/{product}-{slug}', 'showSingle')->name('shop.single');
 });
+
 
