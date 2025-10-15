@@ -30,6 +30,7 @@ class ProductRepository
             $imageName = time() . '_' . $data['image']->getClientOriginalName();
             $data['image']->move(public_path('images'), $imageName);
             $data['image'] = $imageName;
+            dd($data['image']);
         }
 
         return $this->productModel->create([
