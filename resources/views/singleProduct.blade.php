@@ -5,7 +5,7 @@
         <div class="card shadow-lg">
             <div class="row g-0">
                 <div class="col-md-5">
-                    <img src="{{ asset('images/' . $product->image) }}" class="img-fluid rounded-start" alt="{{ $product->name }}">
+                    <img src="{{ asset('storage/' . $product->image) }} " alt="Image" class="img-fluid rounded" style="max-width: 100px; " >
                 </div>
                 <div class="col-md-7">
                     <div class="card-body">
