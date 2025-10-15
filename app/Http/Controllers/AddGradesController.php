@@ -2,40 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Grades;
-use Illuminate\Support\Facades\Auth; //
-
+use App\Http\Requests\GradesRequest;
+use App\Repositories\GradesRepos;
 
 class AddGradesController extends Controller
 {
+    protected $Grades;
 
-
-    public function AddGrades(Request $request)
+    public function __construct(GradesRepos $gradesRepo)
     {
-        $validated = $request->validate([
-            'Class' => 'required|string',
-            'Profesor' => 'required|string',
-            'Grade' => 'required|integer|min:1|max:5',
-        ]);
-
-        $validated['user_id'] = Auth::check() ? Auth::id() : null;
-        Grades::create($validated);
-
-
-
-
-
-        return redirect('/')->with('success', 'Grade added successfully!');
+        $this->Grades = $gradesRepo;
     }
 
+    public function AddGrades(GradesRequest $request)
+    {
+        return $this->Grades->AddGrades($request);
+    }
 
     public function showForm()
     {
-        $grades = Grades::all();
-
+        $grades = $this->Grades->ShowForm();
         return view('AddGrades', compact('grades'));
-
     }
-
 }
