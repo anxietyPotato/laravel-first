@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ContactRequests;
 use App\Repositories\ContactRepo;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+
 
 class ContactController extends Controller
 {
@@ -15,12 +18,13 @@ class ContactController extends Controller
         $this->contactRepo = $contactRepo;
     }
 
-    public function index()
+    public function index(): View
     {
         return view('contact');
     }
 
-    public function AllContact()
+
+    public function AllContact(): View
     {
         $AllContact = $this->contactRepo->AllContact();
         return view('AllContact', compact('AllContact'));
@@ -28,22 +32,22 @@ class ContactController extends Controller
 
 
 
-    public function sendContact(ContactRequests $request)
+    public function sendContact(ContactRequests $request) : RedirectResponse
     {
         return $this->contactRepo->sendContact($request);
     }
 
-    public function delete($contact)
+    public function delete($contact): RedirectResponse
     {
         return $this->contactRepo->delete($contact);
     }
 
-    public function edit(Request $request, $id)
+    public function edit(Request $request, $id): RedirectResponse
     {
         return $this->contactRepo->edit($request, $id);
     }
 
-    public function showEditForm($id)
+    public function showEditForm($id): View
     {
         return $this->contactRepo->showEditForm($id);
     }
