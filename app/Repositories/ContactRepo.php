@@ -4,7 +4,9 @@ namespace App\Repositories;
 
 use App\Models\ContactModel;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Collection;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 class ContactRepo
 {
     private $contactModel;
@@ -14,12 +16,12 @@ class ContactRepo
         $this->contactModel = $contactModel;
     }
 
-    public function AllContact()
+    public function AllContact(): Collection
     {
         return $this->contactModel->all();
     }
 
-    public function sendContact(Request $request)
+    public function sendContact(Request $request): RedirectResponse
     {
         ContactModel::create([
             'email' => $request->get('email'),
@@ -30,7 +32,7 @@ class ContactRepo
         return redirect('/shop');
     }
 
-    public function delete($contact)
+    public function delete($contact): RedirectResponse
     {
         $singleContact = ContactModel::where('id', $contact)->first();
         if ($singleContact == null) {
@@ -40,7 +42,7 @@ class ContactRepo
         return redirect()->back();
     }
 
-    public function edit(Request $request, $id)
+    public function edit(Request $request, $id): RedirectResponse
     {
         $contact = ContactModel::where(['id' => $id])->first();
 
@@ -56,7 +58,7 @@ class ContactRepo
         return redirect(route('all.contact'));
     }
 
-    public function showEditForm($id)
+    public function showEditForm($id): View
     {
         $contact = ContactModel::where(['id' => $id])->first();
 

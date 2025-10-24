@@ -7,10 +7,11 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\AddGradesController;
 use App\Http\Controllers\ContactController;
 use App\Http\Middleware\checkIsAdminMiddleware;
+use App\Models\Grades;
 
 // Public Home
 Route::get('/', function () {
-    $grades = \App\Models\Grades::all();
+    $grades = Grades::all();
     return view('welcome', compact('grades'));
 });
 
