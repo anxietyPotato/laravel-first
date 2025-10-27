@@ -6,7 +6,8 @@ use App\Models\ProductModel;
 use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequests;
-
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 class ProductController extends Controller
 {
     private $productRepo;
@@ -16,14 +17,14 @@ class ProductController extends Controller
         $this->productRepo = $productRepo;
     }
 
-    public function index()
+    public function index(): View
     {
         $products = $this->productRepo->getAllProducts();
 
         return view('allProducts', compact('products'));
     }
 
-    public function delete($id)
+    public function delete($id) : RedirectResponse
     { $singleProduct = $this->productRepo->getProductById($id);
         if ($singleProduct === null) {
             die("this product doesn't exist");
@@ -36,7 +37,7 @@ class ProductController extends Controller
         return redirect()->back()->with('success', 'Product deleted successfully!');
     }
 
-    public function singleProduct(ProductModel $product)
+    public function singleProduct(ProductModel $product): View
     {
         return view('products.edit', compact('product'));
     }

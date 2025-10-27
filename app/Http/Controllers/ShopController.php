@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequests;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 class ShopController extends Controller
 {
     protected $productRepo;
@@ -15,7 +17,7 @@ class ShopController extends Controller
     }
 
     // Show Add Product form + list of products
-    public function showForm()
+    public function showForm(): View
     {
         $products = $this->productRepo->getAllProducts();
         return view('addProduct', compact('products'));
@@ -24,7 +26,7 @@ class ShopController extends Controller
     // Handle Add Product form submission
 
 
-    public function addProduct(ProductRequests $request) {
+    public function addProduct(ProductRequests $request) : RedirectResponse {
         $validated = $request->validated();
         // Delegate creation to repository
         $this->productRepo->createProduct($validated + ['image' => $request->file('image')]);

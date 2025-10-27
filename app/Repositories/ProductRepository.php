@@ -3,6 +3,10 @@
 namespace App\Repositories;
 
 use App\Models\ProductModel;
+use Illuminate\Support\Collection;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+
 
 class ProductRepository
 {
@@ -16,7 +20,7 @@ class ProductRepository
     /**
      * Get all products
      */
-    public function getAllProducts()
+    public function getAllProducts(): Collection
     {
         return $this->productModel->all();
     }
@@ -24,7 +28,7 @@ class ProductRepository
     /**
      * Create a new product
      */
-    public function createProduct(array $data)
+    public function createProduct(array $data): ProductModel
     {
         if (isset($data['image'])) {
             $imagePath = $data['image']->store('products', 'public'); // saves to storage/app/public/products
@@ -45,7 +49,7 @@ class ProductRepository
     /**
      * Update an existing product
      */
-    public function updateProduct(ProductModel $product, array $data)
+    public function updateProduct(ProductModel $product, array $data): ProductModel
     {
         $product->name = $data['name'];
         $product->description = $data['description'];
@@ -59,7 +63,8 @@ class ProductRepository
         $product->save();
         return $product;
     }
-    public function getProductById($id){
+    public function getProductById($id): ?ProductModel
+    {
         return $this->productModel->where(['id'=>$id])->first();
     }
 }
