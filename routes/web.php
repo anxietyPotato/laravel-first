@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\AddGradesController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ShopingCartController;
 use App\Http\Middleware\checkIsAdminMiddleware;
 use App\Models\Grades;
 
@@ -39,6 +40,7 @@ Route::prefix('admin')
         Route::get('/product/edit/{product}', 'singleProduct')->name('product.single');
         Route::post('/product/update/{product}', 'update')->name('product.update');
     });
+
 
 // ==========================
 // 🛍️ Admin Shop Management
@@ -90,4 +92,8 @@ Route::controller(ProductController::class)->group(function () {
     Route::get('/shop/product/{product}-{slug}', 'showSingle')->name('shop.single');
 });
 
+Route::prefix('shopingcart')->middleware('auth')->name('shopingcart.')->group(function () {
+    Route::post('/add', [ShopingCartController::class, 'add'])->name('add');
+    Route::get('/', [ShopingCartController::class, 'show'])->name('show');
+});
 

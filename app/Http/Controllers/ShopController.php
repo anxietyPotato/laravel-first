@@ -25,7 +25,6 @@ class ShopController extends Controller
 
     // Handle Add Product form submission
 
-
     public function addProduct(ProductRequests $request) : RedirectResponse {
         $validated = $request->validated();
         // Delegate creation to repository

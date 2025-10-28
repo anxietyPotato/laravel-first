@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Http\Requests\GradesRequest;
 use App\Models\Grades;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -26,7 +27,7 @@ class GradesRepos {
         return redirect('/')->with('success', 'Grade added successfully!');
     }
 
-    public function ShowForm(): View
+    public function ShowForm(): Collection
     {
         return $this->Grades->all();
     }
