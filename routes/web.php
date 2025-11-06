@@ -95,5 +95,8 @@ Route::controller(ProductController::class)->group(function () {
 Route::prefix('shopingcart')->middleware('auth')->name('shopingcart.')->group(function () {
     Route::post('/add', [ShopingCartController::class, 'add'])->name('add');
     Route::get('/', [ShopingCartController::class, 'show'])->name('show');
+    Route::post('/cart/checkout', [ShopingCartController::class, 'checkout'])->name('checkout');
+    Route::delete('/cart/remove/{id}', [ShopingCartController::class, 'remove'])->name('remove');
+    Route::patch('/cart/update/{id}', [ShopingCartController::class, 'update'])->name('update');
 });
 

@@ -6,7 +6,11 @@
             {{ session('success') }}
         </div>
     @endif
-
+    @if(Auth::check())
+        <div class="text-success">✅ Authenticated as {{ Auth::user()->name }}</div>
+    @else
+        <div class="text-danger">❌ Not authenticated</div>
+    @endif
     <div class="container-fluid py-5 bg-black text-light min-vh-100">
 
         <!-- Header -->

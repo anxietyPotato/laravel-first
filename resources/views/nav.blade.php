@@ -32,7 +32,7 @@
 
                 <!-- Admin Dropdown -->
                 @auth
-                    @if(auth()->user()->role === 'admin')
+                    @if(auth()->user()->role === 'Admin')
                         <!-- Admin Dropdown -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle {{ request()->is('admin/*') ? 'active' : '' }}" href="#"
