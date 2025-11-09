@@ -108,7 +108,7 @@ class ShopingCartRepository implements ShopingCartRepositoryInterface
                 'price' => $item['price'],
             ]);
 
-            // ✅ Reduce stock
+            //  Reduce stock
             $product = ProductModel::find($productId);
             if ($product) {
                 $product->amount -= $item['quantity'];
@@ -117,10 +117,10 @@ class ShopingCartRepository implements ShopingCartRepositoryInterface
             }
         }
 
-        // ✅ Clear cart after successful order
+        //  Clear cart after successful order
         $this->clear();
 
-        return 'Order placed successfully! Stock updated.';
+        return 'Order placed successfully! Thank you for being our  loyal customer!';
     }
     public function update(int $productId, string $action): string
     {
