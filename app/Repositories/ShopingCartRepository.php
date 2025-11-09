@@ -84,7 +84,7 @@ public function get(): array
         ]);
 
         foreach ($cart as $productId => $item) {
-            // ✅ Save ordered item
+            //  Save ordered item
             $order->items()->create([
                 'product_id' => $productId,
                 'quantity' => $item['quantity'],
