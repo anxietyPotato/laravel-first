@@ -122,6 +122,42 @@ class ShopingCartRepository implements ShopingCartRepositoryInterface
 
         return 'Order placed successfully! Stock updated.';
     }
+    public function update(int $productId, string $action): string
+    {
+        $cart = $this->get();
+
+        if (!isset($cart[$productId])) {
+            throw new \Exception('Item not found.');
+        }
+
+        $item = $cart[$productId];
+        $product = ProductModel::find($productId);
+
+        if ($action === 'increase') {
+            if ($product && $item['quantity'] < $product->amount) {
+                $item['quantity']++;
+            } else {
+                throw new \Exception('Max stock reached.');
+            }
+        } elseif ($action === 'decrease') {
+            $item['quantity']--;
+            if ($item['quantity'] <= 0) {
+                unset($cart[$productId]);
+                Session::put('shopingcart', $cart);
+                return 'Item removed from cart.';
+            }
+        }
+
+        $cart[$productId] = $item;
+        Session::put('shopingcart', $cart);
+
+        return 'Cart updated.';
+    }
+
+    public function total(): float
+    {
+        return collect($this->get())->sum(fn($item) => $item['price'] * $item['quantity']);
+    }
 
 
 }

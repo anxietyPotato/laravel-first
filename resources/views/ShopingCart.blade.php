@@ -79,12 +79,17 @@
         </div>
 
         @if(count($items))
-            <form action="{{ route('shopingcart.checkout') }}" method="POST" class="text-center mt-4">
+            <div class="text-center mb-3">
+                <h4>Total to pay: <strong>€{{ number_format($total, 2) }}</strong></h4>
+            </div>
+
+            <form action="{{ route('shopingcart.checkout') }}" method="POST" class="text-center mt-2">
                 @csrf
                 <button type="submit" class="btn btn-success btn-lg">
                     <i class="bi bi-credit-card me-1"></i> Checkout & Submit Order
                 </button>
             </form>
+
         @else
             <div class="alert alert-info text-center">
                 Your cart is empty! 🛒

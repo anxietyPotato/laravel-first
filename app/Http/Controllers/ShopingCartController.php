@@ -8,7 +8,7 @@ use Illuminate\View\View;
 use App\Repositories\ShopingCartRepositoryInterface;
 use App\Models\ProductModel; // Add this at the top
 use Illuminate\Support\Facades\Session;
-
+use Illuminate\Support\Facades\Auth;
 
 
 class ShopingCartController extends Controller
@@ -30,24 +30,22 @@ $this->cart = $cart;
         }
     }
 
+    public function show(): View
+    {
+        $items = $this->cart->get();
+        $total = $this->cart->total();
 
-
-
-
-
-public function show(): View
-{
-$items = $this->cart->get();
-return view('shopingcart', compact('items'));
-}
+        return view('shopingcart', compact('items', 'total'));
+    }
     public function checkout(): RedirectResponse
     {
         try {
-            $message = $this->cart->checkout('Alex'); // or Auth::user()->name
+            $message = $this->cart->checkout(Auth::user()->name); // or Auth::user()->name
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
 
         }
+
 
         return redirect()->route('shop')->with('success', $message);
 
@@ -62,36 +60,16 @@ return view('shopingcart', compact('items'));
 
         return redirect()->route('shopingcart.show')->with('success', 'Item removed from cart.');
     }
+
+
     public function update(Request $request, int $id): RedirectResponse
     {
-        $action = $request->input('action');
-        $cart = $this->cart->get();
-
-        if (!isset($cart[$id])) {
-            return redirect()->route('shopingcart.show')->with('error', 'Item not found.');
+        try {
+            $message = $this->cart->update($id, $request->input('action'));
+            return redirect()->route('shopingcart.show')->with('success', $message);
+        } catch (\Exception $e) {
+            return redirect()->route('shopingcart.show')->with('error', $e->getMessage());
         }
-
-        $item = $cart[$id];
-        $product = ProductModel::find($id);
-
-        if ($action === 'increase') {
-            if ($product && $item['quantity'] < $product->amount) {
-                $item['quantity']++;
-            }
-        } elseif ($action === 'decrease') {
-            $item['quantity']--;
-            if ($item['quantity'] <= 0) {
-                unset($cart[$id]);
-                Session::put('shopingcart', $cart);
-                return redirect()->route('shopingcart.show')->with('success', 'Item removed from cart.');
-            }
-        }
-
-        //  Save updated item back into cart
-        $cart[$id] = $item;
-        Session::put('shopingcart', $cart);
-
-        return redirect()->route('shopingcart.show')->with('success', 'Cart updated.');
     }
 
 }
