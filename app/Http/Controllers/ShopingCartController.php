@@ -24,12 +24,15 @@ $this->cart = $cart;
     {
         try {
             $message = $this->cart->add($request->validated());
+            return redirect()->route('shopingcart.show')->with('success', $message);
         } catch (\Exception $e) {
-            return redirect()->route('shopingcart.show')->with('error', $e->getMessage());
+            return redirect()->back()->with('error', $e->getMessage());
         }
-
-        return redirect()->route('shopingcart.show')->with('success', $message);
     }
+
+
+
+
 
 
 public function show(): View
@@ -42,7 +45,8 @@ return view('shopingcart', compact('items'));
         try {
             $message = $this->cart->checkout('Alex'); // or Auth::user()->name
         } catch (\Exception $e) {
-            return redirect()->route('shopingcart.show')->with('error', $e->getMessage());
+            return redirect()->back()->with('error', $e->getMessage());
+
         }
 
         return redirect()->route('shop')->with('success', $message);
@@ -83,7 +87,7 @@ return view('shopingcart', compact('items'));
             }
         }
 
-        // ✅ Save updated item back into cart
+        //  Save updated item back into cart
         $cart[$id] = $item;
         Session::put('shopingcart', $cart);
 

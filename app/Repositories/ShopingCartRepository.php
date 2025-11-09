@@ -7,31 +7,48 @@ use Illuminate\Support\Facades\Session;
 use App\Models\ProductModel;
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\Log;
+
+
 class ShopingCartRepository implements ShopingCartRepositoryInterface
 {
 
 
 
+
+
     public function add(array $data): string
-        //STRING INSTEAD OF VOID Whenever you change a method's return type in a class that implements an interface
-        //always update the interface too — otherwise PHP will complain.
-
     {
-        $cart = Session::get('shopingcart', []);
+        $productId = $data['product_id'] ?? null;
 
-        $product = ProductModel::find($data['product_id']);
-        if (!$product) {
-            throw new Exception('Product not found.');
+        Log::info("🧩 Entered add() method with product ID: " . $productId);
+
+        if (!$productId) {
+            Log::warning("❌ Missing product_id in request data");
+            throw new \Exception('Invalid product data.');
         }
 
+        $product = ProductModel::find($productId);
+
+        if (!$product) {
+            Log::warning("❌ Product not found for ID: " . $productId);
+            throw new \Exception('Product not found.');
+        }
+
+        Log::info("✅ Found product: {$product->name}, stock: {$product->amount}");
+
+        if ($product->amount <= 0) {
+            Log::warning("🚫 Out of stock: {$product->name}");
+            throw new \Exception('This item is out of stock.');
+        }
+
+        // ✅ FIX: Load cart before checking existing quantity
+        $cart = Session::get('shopingcart', []);
         $existingQty = $cart[$data['product_id']]['quantity'] ?? 0;
         $totalRequested = $existingQty + $data['quantity'];
 
-        $message = 'Product added to cart!';
-
         if ($product->amount < $totalRequested) {
-            $totalRequested = $product->amount;
-            $message = "Only {$product->amount} units in stock. Quantity adjusted to {$totalRequested}.";
+            throw new \Exception('Sorry, not enough items in stock. Try again later.');
         }
 
         $cart[$data['product_id']] = [
@@ -43,12 +60,12 @@ class ShopingCartRepository implements ShopingCartRepositoryInterface
 
         Session::put('shopingcart', $cart);
 
-        return $message;
+        return 'Product added to cart!';
     }
 
 
 
-public function get(): array
+    public function get(): array
     {
         return Session::get('shopingcart', []);
     }
